@@ -6,6 +6,11 @@ public class HexTile : MonoBehaviour
 {
 
     public TileType type;
+
+    public Hex hexSelf = new Hex(0,0);
+
+    private bool isNextLavaTarget = false;
+
     private void OnMouseUp()
     {
         SpriteRenderer m_SpriteRenderer = transform.GetComponent<SpriteRenderer>();
@@ -21,7 +26,11 @@ public class HexTile : MonoBehaviour
 
     public void SetAsNextLavaTarget()
     {
-
+        if (!isNextLavaTarget)
+        {
+            VolcanoEruption.SetNextLavaTarget(hexSelf);
+        }
+        isNextLavaTarget = true;
     }
 
 }

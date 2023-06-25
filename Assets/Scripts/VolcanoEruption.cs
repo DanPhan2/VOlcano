@@ -13,7 +13,7 @@ public class VolcanoEruption : MonoBehaviour
     Object prefabLava;
     bool isRunning = true;
 
-    List<Hex> nextLavaTargets = new List<Hex>();
+    static List<Hex> nextLavaTargets = new List<Hex>();
 
     void Start()
     {   
@@ -136,6 +136,7 @@ public class VolcanoEruption : MonoBehaviour
         return hexes[HexMap.GetHexIndex(q, r)];
     }
 
+<<<<<<< Updated upstream
     void RemoveFromAllInstancesFromBag(Hex hex) {
         do {
             hexBag.Remove(hex);
@@ -143,6 +144,9 @@ public class VolcanoEruption : MonoBehaviour
     }
 
     void SetNextLavaTarget(Hex hex)
+=======
+    static void SetNextLavaTarget(Hex hex)
+>>>>>>> Stashed changes
     {
         nextLavaTargets.Add(hex);
     }
@@ -156,6 +160,7 @@ public class VolcanoEruption : MonoBehaviour
                 if (IsNextToLava(potentialHex))
                 {
                     //TODO chyba trzeba usunac jeszcze z listyNext
+                    nextLavaTargets.Remove(potentialHex);
                     return potentialHex;
                 }
             }

@@ -30,6 +30,8 @@ public class HexMap : MonoBehaviour
                     newObject.transform.SetParent(parentObject);
                     newObject.transform.position = h.Position(newObject.transform.GetComponent<RectTransform>().sizeDelta);
                     
+                    newObject.transform.GetComponent<HexTile>().hexSelf = h;
+
                     newObject.name = "Hex " +q +',' +r;
                     newObject.transform.GetComponentInChildren<TextMeshPro>().text = q.ToString() +','+r.ToString();
                     Debug.Log(q + "," + r);

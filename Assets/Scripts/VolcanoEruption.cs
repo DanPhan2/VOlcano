@@ -78,18 +78,12 @@ public class VolcanoEruption : MonoBehaviour
         //AddNeighboursToBag(rawHex);
     }
 
-<<<<<<< HEAD
-        RemoveFromAllInstancesFromBag(rawHex);
-
-        AddNeighboursToBag(rawHex);
-=======
     void AddHexesToBag()
     {
         foreach (Hex hex in lavaFilledHexes)
         {
             AddNeighboursToBag(hex);
         }
->>>>>>> c3d427c7b2d78313a30c90d40f4c9971472b600f
     }
 
     void AddNeighboursToBag(Hex hex)

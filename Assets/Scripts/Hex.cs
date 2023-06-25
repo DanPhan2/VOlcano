@@ -5,7 +5,7 @@ using UnityEngine;
 public class Hex
 {
     public readonly int Q; // x
-    public readonly int R;  // y
+    public readonly int R; // y
 
     public Hex (int q, int r){
         this.Q = q;

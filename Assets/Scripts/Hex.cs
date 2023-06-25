@@ -20,4 +20,26 @@ public class Hex{
 
         return new Vector2(x, y);
     }
+
+    // override object.Equals
+    public override bool Equals(object obj)
+    {       
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        return Equals(obj);
+    }
+    
+    public override int GetHashCode()
+    {
+        return Q;
+    }
+
+    public bool Equals(Hex other)
+    {
+        if (other == null) return false;
+        return (this.Q == other.Q && this.R == other.R);
+    }
 }

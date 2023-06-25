@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEditor;
 
 public class VolcanoEruption : MonoBehaviour
 {
-    public List<GameObject> hexBag= new List<GameObject>();
-    public List<(int dq, int dr)> hexNeighbours = new List<(int dq, int dr)>{(1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1)};
+    List<Hex> hexBag = new List<Hex>();
+    List<GameObject> lavaFilledHexes = new List<GameObject>();
+    List<(int dq, int dr)> hexNeighbours = new List<(int dq, int dr)>{(1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1)};
+    GameObject[] hexes; 
     Object prefabLava;
-    Transform parentObject;
     bool isRunning = true;
 
     void Start()
-    {
+    {   
         // HexBag = GameObject.FindGameObjectsWithTag("Hex").ToList();
         // RemoveLavaFilled();
         prefabLava = Resources.Load<Object>("Prefabs/Lava");
-        parentObject = GameObject.FindGameObjectsWithTag("Map")[0].transform;
         HexMap.GenerateMap();
+        hexes = GameObject.FindGameObjectsWithTag("Hex");
+        LavaToChosenHex(new Hex(0, 0));
         //wrzuć do worka wszystkie sąsiadujące
     }
 
@@ -35,48 +38,48 @@ public class VolcanoEruption : MonoBehaviour
     {
         isRunning = false;
         yield return new WaitForSeconds(5);
-        Debug.Log(GameObject.FindGameObjectsWithTag("Hex")[0].name == "Hex -6,0");
-        GameObject[] gameObject = GameObject.FindGameObjectsWithTag("Hex");
-        Debug.Log(System.Array.IndexOf(GameObject.FindGameObjectsWithTag("Hex"), System.Array.Find(gameObject, element => element.name == "Hex 0,0")));
-        int ran = Random.Range(-6, 7);
-        Debug.Log(ran);
+        int x = Random.Range(-6, 7);
+        int y = Random.Range(-6, 7);
+        Debug.Log(x + " " + y);
+        Transform parentObject = hexes[HexMap.GetHexIndex(x, y)].transform;
+        GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject; 
         isRunning = true;
     }
 
     void RemoveLavaFilled()
     {
-        List<GameObject> lavaFilled = new List<GameObject>();
-            foreach (GameObject hex in hexBag)
-            {
-                if (hex.transform.childCount >1)
-                {
-                    lavaFilled.Add(hex);
-                }
-            }
-            foreach (GameObject doomedHex in lavaFilled)
-            {
-                    hexBag.Remove(doomedHex);
-            }
+        // List<GameObject> lavaFilled = new List<GameObject>();
+        //     foreach (GameObject hex in hexBag)
+        //     {
+        //         if (hex.transform.childCount >1)
+        //         {
+        //             lavaFilled.Add(hex);
+        //         }
+        //     }
+        //     foreach (GameObject doomedHex in lavaFilled)
+        //     {
+        //             hexBag.Remove(doomedHex);
+        //     }
     }
 
     void AddToBag()
     {
-        List<GameObject> lavaFilled = new List<GameObject>();
-        foreach (GameObject hex in hexBag)
-        {
-            if (hex.transform.childCount >1)
-            {
-                lavaFilled.Add(hex);
-            }
-        }
-        foreach (GameObject lavaHex in lavaFilled)
-        {
-                System.String name = lavaHex.name;
-                foreach (var neighbour in hexNeighbours)
-                {
+        // List<GameObject> lavaFilled = new List<GameObject>();
+        // foreach (GameObject hex in hexBag)
+        // {
+        //     if (hex.transform.childCount >1)
+        //     {
+        //         lavaFilled.Add(hex);
+        //     }
+        // }
+        // foreach (GameObject lavaHex in lavaFilled)
+        // {
+        //         System.String name = lavaHex.name;
+        //         foreach (var neighbour in hexNeighbours)
+        //         {
 
-                }
-        }
+        //         }
+        // }
         //weź wszystkie heksy
         //znajdź te zalane lawą
         //przeiteruj po sąsiadach
@@ -89,10 +92,16 @@ public class VolcanoEruption : MonoBehaviour
         return null;
     }
 
-    void LavaToChosenHex(GameObject hex)
+    void LavaToChosenHex(Hex rawHex)
     {
-        //dołóż lawę do heksa
-        //usuń wszystkie tokeny tego pola z worka
+        GameObject hex = hexes[HexMap.GetHexIndex(rawHex.Q, rawHex.Q)];
+        lavaFilledHexes.Add(hex);
+        Transform parentObject = hex.transform;
+        GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject;
+
+        do {
+            hexBag.Remove(rawHex);
+        } while (hexBag.Remove(rawHex));
     }
 
 }

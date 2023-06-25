@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hex{
+public class Hex
+{
     public readonly int Q; // x
     public readonly int R;  // y
 

@@ -35,11 +35,11 @@ public class VolcanoEruption : MonoBehaviour
     {
         isRunning = false;
         yield return new WaitForSeconds(5);
-        Debug.Log(GameObject.FindGameObjectsWithTag("Hex")[0].name == "Hex -6,0");
+        //Debug.Log(GameObject.FindGameObjectsWithTag("Hex")[0].name == "Hex -6,0");
         GameObject[] gameObject = GameObject.FindGameObjectsWithTag("Hex");
-        Debug.Log(System.Array.IndexOf(GameObject.FindGameObjectsWithTag("Hex"), System.Array.Find(gameObject, element => element.name == "Hex 0,0")));
+        //Debug.Log(System.Array.IndexOf(GameObject.FindGameObjectsWithTag("Hex"), System.Array.Find(gameObject, element => element.name == "Hex 0,0")));
         int ran = Random.Range(-6, 7);
-        Debug.Log(ran);
+        //Debug.Log(ran);
         isRunning = true;
     }
 

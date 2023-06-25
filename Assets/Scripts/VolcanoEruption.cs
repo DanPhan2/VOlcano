@@ -95,12 +95,22 @@ public class VolcanoEruption : MonoBehaviour
     void LavaToChosenHex(Hex rawHex)
     {
         lavaFilledHexes.Add(rawHex);
-        GameObject hex = hexes[HexMap.GetHexIndex(rawHex.Q, rawHex.R)];
+        GameObject hex = getHex(rawHex);
         Transform parentObject = hex.transform;
         GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject;
 
         do {
             hexBag.Remove(rawHex);
         } while (hexBag.Remove(rawHex));
+    }
+
+    GameObject getHex(Hex hex)
+    {
+        return hexes[HexMap.GetHexIndex(hex.Q, hex.R)];
+    }
+
+    GameObject getHex(int q, int r)
+    {
+        return hexes[HexMap.GetHexIndex(q, r)];
     }
 }

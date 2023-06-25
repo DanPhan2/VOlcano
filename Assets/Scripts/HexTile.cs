@@ -18,4 +18,10 @@ public class HexTile : MonoBehaviour
         Debug.Log("Mouse Click Detected on "+ name);
         m_SpriteRenderer.color += new Color(-0.2f,-0.2f,-0.2f,0);
     }
+
+    public void SetAsNextLavaTarget()
+    {
+
+    }
+
 }

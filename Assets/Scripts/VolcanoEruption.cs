@@ -13,6 +13,8 @@ public class VolcanoEruption : MonoBehaviour
     Object prefabLava;
     bool isRunning = true;
 
+    List<Hex> nextLavaTargets = new List<Hex>();
+
     void Start()
     {   
         // HexBag = GameObject.FindGameObjectsWithTag("Hex").ToList();
@@ -21,6 +23,7 @@ public class VolcanoEruption : MonoBehaviour
         HexMap.GenerateMap();
         hexes = GameObject.FindGameObjectsWithTag("Hex");
         LavaToChosenHex(new Hex(0, 0));
+
         //wrzuć do worka wszystkie sąsiadujące
     }
 
@@ -113,4 +116,34 @@ public class VolcanoEruption : MonoBehaviour
     {
         return hexes[HexMap.GetHexIndex(q, r)];
     }
+
+    void SetNextLavaTarget(Hex hex)
+    {
+        nextLavaTargets.Add(hex);
+    }
+
+    Hex ChooseHexForLava()
+    {
+        if(nextLavaTargets.Any())
+        {
+            foreach (Hex potentialHex in nextLavaTargets)
+            {
+                if (IsNextToLava(potentialHex))
+                {
+                    return potentialHex;
+                }
+            }
+        }
+//losowanie hexa z hexbaga
+        Hex hex = new Hex(0,0);
+        return hex;
+    }
+
+    bool IsNextToLava(Hex hex)
+    {
+        bool lavaNeighbour = false;
+        //iteracja po sąsiadach - czy którykolwiek ma lawę
+        return lavaNeighbour;
+    }
+
 }

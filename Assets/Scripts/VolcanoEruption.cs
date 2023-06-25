@@ -73,22 +73,34 @@ public class VolcanoEruption : MonoBehaviour
         GameObject hex = getHex(rawHex);
         Transform parentObject = hex.transform;
         GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject;
+        RemoveFromBag(rawHex);
+        AddHexesToBag();
+        //AddNeighboursToBag(rawHex);
+    }
 
+<<<<<<< HEAD
         RemoveFromAllInstancesFromBag(rawHex);
 
         AddNeighboursToBag(rawHex);
+=======
+    void AddHexesToBag()
+    {
+        foreach (Hex hex in lavaFilledHexes)
+        {
+            AddNeighboursToBag(hex);
+        }
+>>>>>>> c3d427c7b2d78313a30c90d40f4c9971472b600f
     }
 
     void AddNeighboursToBag(Hex hex)
     {
-        System.Random rnd = new System.Random();
 
         foreach ((int dq, int dr) neigh in hexNeighbours)
         {
             Hex neighHex = new Hex(hex.Q + neigh.dq, hex.R + neigh.dr);
 
             if (HexMap.IsInRange(neighHex) && DoesntHaveLava(neighHex)) {
-                hexBag.Insert(rnd.Next(hexBag.Count), neighHex);
+                hexBag.Add(neighHex);
             }
         }
         // List<GameObject> lavaFilled = new List<GameObject>();
@@ -111,6 +123,13 @@ public class VolcanoEruption : MonoBehaviour
         //znajdź te zalane lawą
         //przeiteruj po sąsiadach
         //jeśli nie są zalani lawą dorzuć do worka token
+    }
+
+    void RemoveFromBag(Hex rawHex)
+    {
+        do {
+            hexBag.Remove(rawHex);
+        } while (hexBag.Remove(rawHex));
     }
 
     GameObject getHex(Hex hex)
@@ -181,5 +200,7 @@ public class VolcanoEruption : MonoBehaviour
     {
         return !lavaFilledHexes.Contains(hex);
     }
+
+
 
 }

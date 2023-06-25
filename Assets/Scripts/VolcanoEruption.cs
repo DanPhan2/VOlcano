@@ -136,17 +136,14 @@ public class VolcanoEruption : MonoBehaviour
         return hexes[HexMap.GetHexIndex(q, r)];
     }
 
-<<<<<<< Updated upstream
     void RemoveFromAllInstancesFromBag(Hex hex) {
         do {
             hexBag.Remove(hex);
         } while (hexBag.Remove(hex));
     }
 
-    void SetNextLavaTarget(Hex hex)
-=======
-    static void SetNextLavaTarget(Hex hex)
->>>>>>> Stashed changes
+
+    public static void SetNextLavaTarget(Hex hex)
     {
         nextLavaTargets.Add(hex);
     }

@@ -8,15 +8,15 @@ using TMPro;
 public class HexMap : MonoBehaviour
 {
 
- // Use this for initialization
- [MenuItem("Haha/2D Object/CreateGameObjects")]
+    static int hex_radius = 6;
 
-
+    // Use this for initialization
+    [MenuItem("Haha/2D Object/CreateGameObjects")]
     public static void GenerateMap()
     {
         Transform parentObject =  GameObject.FindGameObjectsWithTag("Map")[0].transform;
         Object prefab = Resources.Load<Object>("Prefabs/Hex");
-        int hex_radius = 6;
+
         for (int q = -hex_radius; q <= hex_radius; q++)
         {
             for (int r = -hex_radius; r <= hex_radius; r++)
@@ -52,10 +52,20 @@ public class HexMap : MonoBehaviour
         }
     }
 
-    public static int GetHexIndex(int x, int y)
+    public static int GetHexIndex(int q, int r)
     {
-        int startSum = 13 - Mathf.Abs(x);
+        int startSum = 13 - Mathf.Abs(q);
 
-        return 63 + (int) Mathf.Sign(x) * (91 - startSum * (startSum + 1) / 2) + y;
+        return 63 + (int) Mathf.Sign(q) * (91 - startSum * (startSum + 1) / 2) + r;
+    }
+
+    public static bool IsInRange(int q, int r)
+    {
+        return ((-hex_radius <= q + r) && (q + r <= hex_radius));
+    }
+
+    public static bool IsInRange(Hex hex)
+    {
+        return IsInRange(hex.Q, hex.R);
     }
 }

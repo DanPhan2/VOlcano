@@ -22,6 +22,8 @@ public class HexTile : MonoBehaviour
         SpriteRenderer m_SpriteRenderer = transform.GetComponent<SpriteRenderer>();
         Debug.Log("Mouse Click Detected on "+ name);
         m_SpriteRenderer.color += new Color(-0.2f,-0.2f,-0.2f,0);
+        SetAsNextLavaTarget();
+        
     }
 
     public void SetAsNextLavaTarget()

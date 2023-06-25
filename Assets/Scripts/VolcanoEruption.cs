@@ -157,6 +157,7 @@ public class VolcanoEruption : MonoBehaviour
                 if (IsNextToLava(potentialHex))
                 {
                     //TODO chyba trzeba usunac jeszcze z listyNext
+                    Debug.Log("Choosing clicked");
                     nextLavaTargets.Remove(potentialHex);
                     return potentialHex;
                 }

@@ -30,7 +30,7 @@ public class Hex
             return false;
         }
 
-        return Equals(obj);
+        return Equals((Hex) obj);
     }
     
     public override int GetHashCode()

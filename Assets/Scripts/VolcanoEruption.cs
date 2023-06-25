@@ -23,7 +23,6 @@ public class VolcanoEruption : MonoBehaviour
         HexMap.GenerateMap();
         hexes = GameObject.FindGameObjectsWithTag("Hex");
         LavaToChosenHex(new Hex(0, 0));
-
         //wrzuć do worka wszystkie sąsiadujące
     }
 
@@ -41,40 +40,57 @@ public class VolcanoEruption : MonoBehaviour
     {
         isRunning = false;
         yield return new WaitForSeconds(1);
-        int x = Random.Range(-6, 7);
-        int y = Random.Range(-6, 7);
-        Debug.Log(x + " " + y);
-        if (HexMap.IsInRange(x, y)) {
-            Transform parentObject = hexes[HexMap.GetHexIndex(x, y)].transform;
-            GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject; 
-        }
+        Hex chosenHex = ChooseHexForLava();
+        LavaToChosenHex(chosenHex);
         isRunning = true;
     }
 
-    void RemoveLavaFilled()
+    void RemoveLavaFilled(Hex hex)
     {
-        // List<GameObject> lavaFilled = new List<GameObject>();
-        //     foreach (GameObject hex in hexBag)
-        //     {
-        //         if (hex.transform.childCount >1)
-        //         {
-        //             lavaFilled.Add(hex);
-        //         }
-        //     }
-        //     foreach (GameObject doomedHex in lavaFilled)
-        //     {
-        //             hexBag.Remove(doomedHex);
-        //     }
+        lavaFilledHexes.Remove(hex);
+        System.Random rnd = new System.Random();
+
+        foreach ((int dq, int dr) neigh in hexNeighbours)
+        {
+            Hex neighHex = new Hex(hex.Q + neigh.dq, hex.R + neigh.dr);
+
+            if (!HexMap.IsInRange(neighHex)) continue;
+
+            if (!DoesntHaveLava(neighHex)) {
+                Debug.Log("Adding: " + neighHex.Q + ", " + neighHex.R);
+                hexBag.Insert(rnd.Next(hexBag.Count), hex);
+            } else 
+            {
+                hexBag.Remove(neighHex);
+            }
+        }
+    }
+
+    void LavaToChosenHex(Hex rawHex)
+    {
+        Debug.Log("LavaPour: " + rawHex.Q + ", " + rawHex.R);
+        lavaFilledHexes.Add(rawHex);
+        GameObject hex = getHex(rawHex);
+        Transform parentObject = hex.transform;
+        GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject;
+
+        do {
+            hexBag.Remove(rawHex);
+        } while (hexBag.Remove(rawHex));
+
+        AddNeighboursToBag(rawHex);
     }
 
     void AddNeighboursToBag(Hex hex)
     {
+        System.Random rnd = new System.Random();
+
         foreach ((int dq, int dr) neigh in hexNeighbours)
         {
-            Hex neighHex = new Hex(hex.Q + dq, hex.R + dr);
+            Hex neighHex = new Hex(hex.Q + neigh.dq, hex.R + neigh.dr);
 
             if (HexMap.IsInRange(neighHex) && DoesntHaveLava(neighHex)) {
-                hexBag.Add(neighHex);
+                hexBag.Insert(rnd.Next(hexBag.Count), neighHex);
             }
         }
         // List<GameObject> lavaFilled = new List<GameObject>();
@@ -97,24 +113,6 @@ public class VolcanoEruption : MonoBehaviour
         //znajdź te zalane lawą
         //przeiteruj po sąsiadach
         //jeśli nie są zalani lawą dorzuć do worka token
-    }
-        
-    GameObject DrawFromBag()
-    {
-    //losowy element z worka
-        return null;
-    }
-
-    void LavaToChosenHex(Hex rawHex)
-    {
-        lavaFilledHexes.Add(rawHex);
-        GameObject hex = getHex(rawHex);
-        Transform parentObject = hex.transform;
-        GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject;
-
-        do {
-            hexBag.Remove(rawHex);
-        } while (hexBag.Remove(rawHex));
     }
 
     GameObject getHex(Hex hex)
@@ -145,9 +143,17 @@ public class VolcanoEruption : MonoBehaviour
                 }
             }
         }
-        //losowanie hexa z hexbaga
-        Hex hex = new Hex(0,0);
+
+        Hex hex = DrawFromBag();
         return hex;
+    }
+
+    Hex DrawFromBag()
+    {
+        System.Random rnd = new System.Random();
+        int s = rnd.Next(hexBag.Count);
+        Debug.Log(s);
+        return hexBag[s];
     }
 
     bool IsNextToLava(Hex hex)
@@ -159,7 +165,7 @@ public class VolcanoEruption : MonoBehaviour
 
     bool DoesntHaveLava(Hex hex)
     {
-        return lavaFilledHexes.Contains(hex);
+        return !lavaFilledHexes.Contains(hex);
     }
 
 }

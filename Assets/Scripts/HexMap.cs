@@ -51,4 +51,11 @@ public class HexMap : MonoBehaviour
             }
         }
     }
+
+    public static int GetHexIndex(int x, int y)
+    {
+        int startSum = 13 - Mathf.Abs(x);
+
+        return 63 + (int) Mathf.Sign(x) * (91 - startSum * (startSum + 1) / 2) + y;
+    }
 }

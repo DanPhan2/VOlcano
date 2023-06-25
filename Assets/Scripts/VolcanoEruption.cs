@@ -7,7 +7,7 @@ using UnityEditor;
 public class VolcanoEruption : MonoBehaviour
 {
     List<Hex> hexBag = new List<Hex>();
-    List<GameObject> lavaFilledHexes = new List<GameObject>();
+    List<Hex> lavaFilledHexes = new List<Hex>();
     List<(int dq, int dr)> hexNeighbours = new List<(int dq, int dr)>{(1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1)};
     GameObject[] hexes; 
     Object prefabLava;
@@ -94,8 +94,8 @@ public class VolcanoEruption : MonoBehaviour
 
     void LavaToChosenHex(Hex rawHex)
     {
-        GameObject hex = hexes[HexMap.GetHexIndex(rawHex.Q, rawHex.Q)];
-        lavaFilledHexes.Add(hex);
+        lavaFilledHexes.Add(rawHex);
+        GameObject hex = hexes[HexMap.GetHexIndex(rawHex.Q, rawHex.R)];
         Transform parentObject = hex.transform;
         GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject;
 
@@ -103,5 +103,4 @@ public class VolcanoEruption : MonoBehaviour
             hexBag.Remove(rawHex);
         } while (hexBag.Remove(rawHex));
     }
-
 }

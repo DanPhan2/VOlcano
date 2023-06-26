@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+
 public class VolcanoEruption : MonoBehaviour
 {
     List<Hex> hexBag = new List<Hex>();
@@ -11,7 +12,11 @@ public class VolcanoEruption : MonoBehaviour
     List<(int dq, int dr)> hexNeighbours = new List<(int dq, int dr)>{(1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1)};
     GameObject[] hexes; 
     Object prefabLava;
+    public Display display;
+    //Timer logic
     bool isRunning = true;
+    public float timeBetweenTicks;
+    public float timeBeforeTickRemaining;
 
     static List<Hex> nextLavaTargets = new List<Hex>();
 
@@ -24,6 +29,8 @@ public class VolcanoEruption : MonoBehaviour
         hexes = GameObject.FindGameObjectsWithTag("Hex");
         LavaToChosenHex(new Hex(0, 0));
         //wrzuć do worka wszystkie sąsiadujące
+
+        timeBeforeTickRemaining = timeBetweenTicks;
     }
 
     // Update is called once per frame
@@ -32,7 +39,17 @@ public class VolcanoEruption : MonoBehaviour
     {
         if (isRunning)
         {
-            StartCoroutine(MyCoroutine());
+                    UpdateDisplay();
+            if (timeBeforeTickRemaining > 0)
+            {
+                timeBeforeTickRemaining -= Time.deltaTime;
+            }
+            else
+            {
+                Debug.Log("Time has run out!");
+                timeBeforeTickRemaining = timeBetweenTicks;
+            }
+            //StartCoroutine(MyCoroutine());
         }
     }
 
@@ -43,6 +60,7 @@ public class VolcanoEruption : MonoBehaviour
         Hex chosenHex = ChooseHexForLava();
         LavaToChosenHex(chosenHex);
         isRunning = true;
+
     }
 
     void RemoveLavaFilled(Hex hex)
@@ -198,6 +216,31 @@ public class VolcanoEruption : MonoBehaviour
         return !lavaFilledHexes.Contains(hex);
     }
 
+    public Dictionary<Hex, float> GetProbability()
+    {
+        Dictionary<Hex, float> probDict = new Dictionary<Hex, float>();
+        float allHexes = hexBag.Count;
+        var numberOfHexes = from n in hexBag
+         group n by n into pair
+         select new { hex = pair.Key, count = pair.Count()};
 
+        foreach(var pair in numberOfHexes)
+        {
+            float percent = pair.count/allHexes * 100;
+            probDict.Add(pair.hex,percent);
+            Debug.Log("Hex: "+ pair.hex.Q +','+pair.hex.R+' '+ percent.ToString("0.00")+'%');
+        }
+        return probDict;
+    }
 
+    public float GetTickTimer()
+    {
+        return timeBeforeTickRemaining;
+    } 
+
+    void UpdateDisplay()
+    {
+        display.SetProbabilityDisplay(GetProbability());
+        display.SetTimer(GetTickTimer());
+    }
 }

@@ -20,15 +20,17 @@ public class VolcanoEruption : MonoBehaviour
 
     static List<Hex> nextLavaTargets = new List<Hex>();
 
+    //Tick related
+    public bool flag = false;
+    public GameObject tickDisplay;
+
     void Start()
     {   
-        // HexBag = GameObject.FindGameObjectsWithTag("Hex").ToList();
-        // RemoveLavaFilled();
         prefabLava = Resources.Load<Object>("Prefabs/Lava");
         HexMap.GenerateMap();
         hexes = GameObject.FindGameObjectsWithTag("Hex");
+
         LavaToChosenHex(new Hex(0, 0));
-        //wrzuć do worka wszystkie sąsiadujące
 
         timeBeforeTickRemaining = timeBetweenTicks;
     }
@@ -39,28 +41,47 @@ public class VolcanoEruption : MonoBehaviour
     {
         if (isRunning)
         {
-                    UpdateDisplay();
             if (timeBeforeTickRemaining > 0)
             {
                 timeBeforeTickRemaining -= Time.deltaTime;
+                if (timeBeforeTickRemaining < 0)
+                {
+                    timeBeforeTickRemaining = 0.0f;
+                }
+                UpdateDisplay();
             }
             else
             {
-                Debug.Log("Time has run out!");
-                timeBeforeTickRemaining = timeBetweenTicks;
+                StartCoroutine(TickCoroutine());
             }
-            //StartCoroutine(MyCoroutine());
         }
     }
 
-    public IEnumerator MyCoroutine()
+    public IEnumerator TickCoroutine()
     {
+        flag = true;
         isRunning = false;
-        yield return new WaitForSeconds(1);
+        tickDisplay.SetActive(true);
+        while(flag)
+        {
+            yield return null;
+        }
+
+        isRunning = true;
+        LavaEruption();
+        tickDisplay.SetActive(false);
+        timeBeforeTickRemaining = timeBetweenTicks;
+    }
+
+    public void SwitchFlag()
+    {
+        flag = false;
+    }
+
+    void LavaEruption()
+    {
         Hex chosenHex = ChooseHexForLava();
         LavaToChosenHex(chosenHex);
-        isRunning = true;
-
     }
 
     void RemoveLavaFilled(Hex hex)
@@ -229,6 +250,15 @@ public class VolcanoEruption : MonoBehaviour
             float percent = pair.count/allHexes * 100;
             probDict.Add(pair.hex,percent);
             Debug.Log("Hex: "+ pair.hex.Q +','+pair.hex.R+' '+ percent.ToString("0.00")+'%');
+        }
+        //przjeście po liście z pewniakami i ustawienie ich na 100%
+        foreach (Hex hex in nextLavaTargets)
+        {
+            if (probDict.ContainsKey(hex)) 
+            {
+                probDict[hex] = 100.0f;
+            }
+            
         }
         return probDict;
     }

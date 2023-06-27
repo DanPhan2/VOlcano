@@ -34,6 +34,8 @@ public class Display : MonoBehaviour
 
     public GameObject NothingDisplay;
 
+    public GameObject EndScreen;
+
     public void SetProbabilityDisplay(Dictionary<Hex, float> probabilityDictonary)
     {
         var sortedDict = from entry in probabilityDictonary orderby entry.Value descending select entry;

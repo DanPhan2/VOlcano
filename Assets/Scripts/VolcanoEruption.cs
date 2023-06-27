@@ -345,8 +345,7 @@ public class VolcanoEruption : MonoBehaviour
 
 
     void End(){
-
-    }
+        display.EndScreen.SetActive(true);    }
 
     public IEnumerator Rain()
     {
@@ -359,7 +358,7 @@ public class VolcanoEruption : MonoBehaviour
         }
 
         display.RainDisplay.SetActive(false);
-        
+
         //MakeHexesClickable(false, Mode.Regular);
     }
 

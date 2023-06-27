@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 public enum SpecialEvent {Eruption, Rain, Hunger, Nothing, Disaster, Rot}
 public class VolcanoEruption : MonoBehaviour
@@ -497,7 +497,7 @@ public class VolcanoEruption : MonoBehaviour
         lavaFilledHexes.Add(rawHex);
         GameObject hex = getHex(rawHex);
         Transform parentObject = hex.transform;
-        GameObject newObject = PrefabUtility.InstantiatePrefab(prefabLava, parentObject) as GameObject;
+        GameObject newObject = Instantiate(prefabLava, parentObject) as GameObject;
         RemoveFromBag(rawHex);
         AddHexesToBag();
         //AddNeighboursToBag(rawHex);

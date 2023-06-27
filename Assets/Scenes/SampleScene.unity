@@ -3693,7 +3693,7 @@ MonoBehaviour:
   eventsToSelect: 0300000004000000010000000100000002000000020000000200000002000000020000000200000005000000050000000500000005000000050000000500000000000000000000000000000000000000
   currentRandomEvent: 0
   display: {fileID: 1439906713}
-  timeBetweenTicks: 5
+  timeBetweenTicks: 40
   timeBeforeTickRemaining: 0
   eventFlag: 0
   mainFlag: 0
@@ -6272,7 +6272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1455147638
 RectTransform:
   m_ObjectHideFlags: 0

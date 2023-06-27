@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
+//using UnityEditor;
 using TMPro;
 
 public class HexMap : MonoBehaviour
@@ -11,7 +11,7 @@ public class HexMap : MonoBehaviour
     static int hex_radius = 6;
 
     // Use this for initialization
-    [MenuItem("Haha/2D Object/CreateGameObjects")]
+    //[MenuItem("Haha/2D Object/CreateGameObjects")]
     public static void GenerateMap()
     {
         Transform parentObject =  GameObject.FindGameObjectsWithTag("Map")[0].transform;
@@ -26,7 +26,7 @@ public class HexMap : MonoBehaviour
                     // Instantiate a Hex
                     Hex h = new Hex(q, r);
 
-                    GameObject newObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject; 
+                    GameObject newObject = Instantiate(prefab) as GameObject; 
                     newObject.transform.SetParent(parentObject);
                     newObject.transform.position = h.Position(newObject.transform.GetComponent<RectTransform>().sizeDelta);
                     

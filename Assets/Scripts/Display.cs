@@ -6,10 +6,33 @@ using System.Linq;
 
 public class Display : MonoBehaviour
 {
+    public VolcanoEruption mainScript;
+    
+    Hex chosenHex;
+
     public TMP_Text ProbabilityTextHexes;
     public TMP_Text ProbabilityTextPercent;
 
+    public TMP_Text chosenHexTextLava;
+    public TMP_Text chosenHexTextRain;
+
     public TMP_Text TimerText;
+
+    public GameObject Control;
+
+    public GameObject PreparationDisplay;
+
+    public GameObject RainDisplay;
+
+    public GameObject EruptionDisplay;
+
+    public GameObject HungerDisplay;
+
+    public GameObject RotDisplay;
+
+    public GameObject DisasterDisplay;
+
+    public GameObject NothingDisplay;
 
     public void SetProbabilityDisplay(Dictionary<Hex, float> probabilityDictonary)
     {
@@ -33,5 +56,56 @@ public class Display : MonoBehaviour
         float seconds = Mathf.FloorToInt(timer % 60);
         TimerText.text = "Do kolejnego ticku pozostało:\n"+string.Format("{0:00}:{1:00}", minutes, seconds);
 
+    }
+
+    public void SetRainDisplay(Hex hex)
+    {
+        chosenHex = hex;
+        RainDisplay.SetActive(true);
+        chosenHexTextRain.text = "Wybrane pole: "+hex.Q+","+hex.R;
+        //oznaczenie wybranego Hexa
+        //buttony ok i skip
+    }
+    public void SetDisasterDisplay()
+    {
+        DisasterDisplay.SetActive(true);
+        //oznaczenie wybranego Hexa
+        //buttony ok i skip
+    }
+    public void SetRotDisplay()
+    {
+        RotDisplay.SetActive(true);
+        //oznaczenie wybranego Hexa
+        //buttony ok i skip
+    }
+    public void SetNothingDisplay()
+    {
+        NothingDisplay.SetActive(true);
+        //oznaczenie wybranego Hexa
+        //buttony ok i skip
+    }
+    public void SetHungerDisplay()
+    {
+        HungerDisplay.SetActive(true);
+        //oznaczenie wybranego Hexa
+        //buttony ok i skip
+    }
+    public void SetEruptionDisplay(Hex hex)
+    {
+        chosenHex = hex;
+        EruptionDisplay.SetActive(true);
+        chosenHexTextLava.text = "Wybrane pole: "+hex.Q+","+hex.R;
+        //oznaczenie wybranego Hexa
+        //buttony ok i skip
+    }
+
+    public void Erupt()
+    {
+        mainScript.LavaToChosenHex(chosenHex);
+    }
+
+    public void Rainy()
+    {
+        mainScript.ExecuteRain(chosenHex);
     }
 }

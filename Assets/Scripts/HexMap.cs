@@ -39,15 +39,19 @@ public class HexMap : MonoBehaviour
 
                     if ((0<=q+r) && (q+r<=0) && (q<=0) && (r<=0)&& (q>=0) && (r>=0)){
                         m_SpriteRenderer.color = Color.red;
+                        newObject.transform.GetComponent<HexTile>().baseColor = Color.red;
                     }
                     else if ((-2<=q+r) && (q+r<=2)&& (q<=2) && (r<=2)&& (q>=-2) && (r>=-2)){
                         m_SpriteRenderer.color = Color.gray;
+                        newObject.transform.GetComponent<HexTile>().baseColor = Color.gray;
                     }
                     else if ((-4<=q+r) && (q+r<=4)&& (q<=4) && (r<=4)&& (q>=-4) && (r>=-4)){
                         m_SpriteRenderer.color = Color.green;
+                        newObject.transform.GetComponent<HexTile>().baseColor = Color.green;
                     }
                     else if ((-6<=q+r) && (q+r<=6)&& (q<=6) && (r<=6)&& (q>=-6) && (r>=-6)){
                         m_SpriteRenderer.color = Color.yellow;
+                        newObject.transform.GetComponent<HexTile>().baseColor = Color.yellow;
                     }
                 }
             }
@@ -63,7 +67,7 @@ public class HexMap : MonoBehaviour
 
     public static bool IsInRange(int q, int r)
     {
-        return ((-hex_radius <= q + r) && (q + r <= hex_radius));
+        return ((-hex_radius <= q + r) && (q + r <= hex_radius)&&(q<=hex_radius) && (r<=hex_radius) &&(q>=-hex_radius) && (r>=-hex_radius)) ;
     }
 
     public static bool IsInRange(Hex hex)
